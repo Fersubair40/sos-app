@@ -4,13 +4,13 @@ import Constants from 'expo-constants';
 import Heading from '../components/Heading';
 import Input from '../components/Input';
 import FilledButton from '../components/FilledButton';
-import { TextButton } from '../components/TextButton';
+
 import { Error } from '../components/Error';
 import { IconButton } from '../components/IconButton';
 import { AuthContext } from '../contexts/AuthContext';
 import { Loading } from '../components/Loading';
 
-import { selectContact } from '../utils/selectContact';
+import { selectContactPhone } from 'react-native-select-contact';
 
 const Toast = ({ visible, message }) => {
 	if (visible) {
@@ -23,21 +23,41 @@ const Toast = ({ visible, message }) => {
 export default function RegistratonScreen({ navigation }) {
 	const { register } = React.useContext(AuthContext);
 	const [username, setUsername] = React.useState('');
-	const [fullName, setFullname] = React.useState('emii subair');
-	const [password, setPassword] = React.useState('abc19decj');
-	const [phoneNumber, setPhonenumber] = React.useState('+23409091421253');
-	const [emergency_contacts, setContacts] = React.useState('');
+	const [fullName, setFullname] = React.useState('');
+	const [password, setPassword] = React.useState('');
+	const [phoneNumber, setPhonenumber] = React.useState('');
+	const [con1, setContacts] = React.useState('');
+	const [con2, setContact2] = React.useState('');
 	const [loading, setLoading] = React.useState(false);
 	const [error, setError] = React.useState('');
-	// const [setContacts] = React.useState(getPhoneNumber);
 	const [visibleToast, setvisibleToast] = React.useState(false);
-	// const [selectedphone, setSelectedPhone] = React.useState(false)
 
 	React.useEffect(() => setvisibleToast(false), [visibleToast]);
 
 	const handleButtonPress = () => {
 		setvisibleToast(true);
 	};
+
+	const getPhoneNumber = () => {
+		return selectContactPhone().then((selection) => {
+			let { contact, selectedPhone } = selection;
+
+			setContacts(selectedPhone.number);
+			console.log(selectedPhone.number);
+		});
+	};
+
+	const getPhoneNumbe = () => {
+		return selectContactPhone().then((selectio) => {
+			let { contact, selectedPhone } = selectio;
+			setContact2(selectedPhone.number);
+
+			console.log(selectedPhone.number);
+		});
+	};
+
+	const emergency_contacts = [];
+	emergency_contacts.push(con1, con2);
 
 	return (
 		<ScrollView>
@@ -58,20 +78,33 @@ export default function RegistratonScreen({ navigation }) {
 					style={styles.closeIcon}
 					name={'add'}
 					onPress={() => {
-						selectContact();
+						getPhoneNumber();
 					}}
 				/>
-				
+
 				<Input
 					style={styles.input}
-					placeholder={'Emergency Conatacts'}
-					value={emergency_contacts}
+					placeholder={'Emergency Conatact 1'}
+					value={con1}
 					onChangeText={setContacts}
+				/>
+				<IconButton
+					style={styles.closeIcon}
+					name={'add'}
+					onPress={() => {
+						getPhoneNumbe();
+					}}
+				/>
+
+				<Input
+					style={styles.input}
+					placeholder={'Emergency Conatact 2'}
+					value={con2}
+					onChangeText={setContact2}
 				/>
 				<Input
 					style={styles.input}
 					placeholder={'Phone Number'}
-					// keyboardType={'numbezr-pad'}
 					value={phoneNumber}
 					onChangeText={setPhonenumber}
 				/>
@@ -85,7 +118,6 @@ export default function RegistratonScreen({ navigation }) {
 							handleButtonPress();
 							navigation.navigate('LoginStack');
 						} catch (error) {
-							// console.log(er)
 							setError(error.message);
 							setLoading(false);
 						}

@@ -7,7 +7,14 @@ import { TextButton } from '../components/TextButton';
 import { Error } from '../components/Error';
 import { AuthContext } from '../contexts/AuthContext';
 import { Loading } from '../components/Loading';
-// import { IconButton } from '../components/IconButton';
+
+const Toast = ({ visible, message }) => {
+	if (visible) {
+		ToastAndroid.showWithGravityAndOffset(message, ToastAndroid.LONG, ToastAndroid.CENTER, 25, 50);
+		return null;
+	}
+	return null;
+};
 
 export default function LoginScreen({ navigation }) {
 	const { login } = React.useContext(AuthContext);
@@ -15,7 +22,13 @@ export default function LoginScreen({ navigation }) {
 	const [password, setPassword] = React.useState('19dec1998');
 	const [loading, setLoading] = React.useState(false);
 	const [error, setError] = React.useState('');
+	const [visibleToast, setvisibleToast] = React.useState(false);
 
+	React.useEffect(() => setvisibleToast(false), [visibleToast]);
+
+	const handleButtonPress = () => {
+		setvisibleToast(true);
+	};
 	return (
 		<View style={styles.container}>
 			<Heading style={styles.title}>Login</Heading>
@@ -35,8 +48,9 @@ export default function LoginScreen({ navigation }) {
 					try {
 						setLoading(true);
 						await login(username, password);
-						setLoading(false)
-						navigation.navigate('LoginStack');
+						setLoading(false);
+						handleButtonPress();
+						// navigation.navigate('LoginStack');
 					} catch (error) {
 						setError(error.message);
 						setLoading(false);
@@ -50,6 +64,7 @@ export default function LoginScreen({ navigation }) {
 				}}
 			/>
 			<Loading loading={loading} />
+			<Toast style={styles.toast} visible={visibleToast} message="Login Successfully" />
 		</View>
 	);
 }
