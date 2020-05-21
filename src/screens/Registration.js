@@ -113,6 +113,7 @@ export default function RegistratonScreen({ navigation }) {
 					style={styles.loginbutton}
 					onPress={async () => {
 						try {
+							
 							setLoading(true);
 							await register(username, fullName, password, emergency_contacts, phoneNumber);
 							handleButtonPress();
