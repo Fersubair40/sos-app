@@ -1,0 +1,8 @@
+2020.05.31 14:09:40 INFO  started: Metals version 0.9.0 in workspace '/home/subair/Desktop/emergency'
+2020.05.31 14:09:44 INFO  time: initialize in 3.34s
+2020.05.31 14:09:53 WARN  no build tool detected in workspace '/home/subair/Desktop/emergency'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2020.05.31 14:17:47 INFO  shutting down Metals
+2020.06.04 11:51:34 INFO  started: Metals version 0.9.0 in workspace '/home/subair/Desktop/emergency'
+2020.06.04 11:51:37 INFO  time: initialize in 3.12s
+2020.06.04 11:51:48 WARN  no build tool detected in workspace '/home/subair/Desktop/emergency'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2020.06.04 11:52:22 INFO  shutting down Metals

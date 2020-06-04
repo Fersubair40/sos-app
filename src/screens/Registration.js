@@ -10,7 +10,7 @@ import { IconButton } from '../components/IconButton';
 import { AuthContext } from '../contexts/AuthContext';
 import { Loading } from '../components/Loading';
 
-import { selectContactPhone } from 'react-native-select-contact';
+// import { selectContactPhone } from 'react-native-select-contact';
 
 const Toast = ({ visible, message }) => {
 	if (visible) {
