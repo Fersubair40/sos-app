@@ -10,7 +10,7 @@ import { IconButton } from '../components/IconButton';
 import { AuthContext } from '../contexts/AuthContext';
 import { Loading } from '../components/Loading';
 
-// import { selectContactPhone } from 'react-native-select-contact';
+import { selectContactPhone } from 'react-native-select-contact';
 
 const Toast = ({ visible, message }) => {
 	if (visible) {
@@ -76,7 +76,7 @@ export default function RegistratonScreen({ navigation }) {
 				/>
 				<IconButton
 					style={styles.closeIcon}
-					name={'add'}
+					name={'add-user'}
 					onPress={() => {
 						getPhoneNumber();
 					}}
@@ -90,7 +90,7 @@ export default function RegistratonScreen({ navigation }) {
 				/>
 				<IconButton
 					style={styles.closeIcon}
-					name={'add'}
+					name={'add-user'}
 					onPress={() => {
 						getPhoneNumbe();
 					}}
@@ -113,7 +113,6 @@ export default function RegistratonScreen({ navigation }) {
 					style={styles.loginbutton}
 					onPress={async () => {
 						try {
-							
 							setLoading(true);
 							await register(username, fullName, password, emergency_contacts, phoneNumber);
 							handleButtonPress();
@@ -149,10 +148,10 @@ const styles = StyleSheet.create({
 		marginVertical: 30,
 	},
 	closeIcon: {
-		// left: 0
+		// left: 10
 		// position: 'absolute',
 		// top: 30,
-		right: 70,
+		right: 115,
 	},
 	toast: {
 		paddingTop: Constants.statusBarHeight,

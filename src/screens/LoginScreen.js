@@ -18,8 +18,8 @@ const Toast = ({ visible, message }) => {
 
 export default function LoginScreen({ navigation }) {
 	const { login } = React.useContext(AuthContext);
-	const [username, setUsername] = React.useState('sube');
-	const [password, setPassword] = React.useState('19dec1998');
+	const [username, setUsername] = React.useState('');
+	const [password, setPassword] = React.useState('');
 	const [loading, setLoading] = React.useState(false);
 	const [error, setError] = React.useState('');
 	const [visibleToast, setvisibleToast] = React.useState(false);

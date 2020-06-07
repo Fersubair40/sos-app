@@ -5,69 +5,34 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AuthStackNavigator from './navigators/AuthStackNavigator';
 import { lightTheme } from './themes/light';
 import { AuthContext } from './contexts/AuthContext';
-import axios from 'axios';
-import { BASE_URL } from './config';
-import { sleep } from './utils/sleep';
-import { createAction } from './config/createAction';
 import MainStackNavigator from './navigators/MainStackNavigator';
+import { useAuth } from './hooks/useAuth';
+import { UserContext } from './contexts/UserContext';
+import SplashScreen from './screens/SplashScreen';
 
 const RootStack = createStackNavigator();
 export default function App() {
-	const [state, dispatch] = React.useReducer(
-		(state, action) => {
-			switch (action.type) {
-				case 'SET_USER':
-					return {
-						...state,
-						user: { ...action.payload },
-					};
-				case 'REMOVE_USER':
-					return {
-						...state,
-						user: undefined,
-					};
-				default:
-					return state;
-			}
-		},
-		{
-			user: undefined,
-		}
-	);
-
-	const auth = React.useMemo(
-		() => ({
-			login: async (username, password) => {
-				await sleep(2000);
-				const { data } = await axios.post(`${BASE_URL}/login`, {
-					username,
-					password,
-				});
-				const user = {
-					user_id: data.user_id,
-					token: data.access_token,
-				};
-				dispatch(createAction('SET_USER', user));
-			},
-			logout: () => {
-				dispatch(createAction('REMOVE_USER'));
-			},
-			register: async (username, fullName, password, emergency_contacts, phoneNumber) => {
-				await sleep(2000);
-				const result = await axios.post(`${BASE_URL}/register`, {
-					username,
-					fullName,
-					password,
-					emergency_contacts,
-					phoneNumber,
-				});
-				console.log(result);
-			},
-		}),
-		[]
-	);
+	const { auth, state } = useAuth();
 
 	console.log(state.user);
+
+	function renderScreens() {
+		if (state.loading) {
+			return <RootStack.Screen name={'Splsh'} component={SplashScreen} />;
+		}
+
+		return state.user ? (
+			<RootStack.Screen name={'MainStack'}>
+				{() => (
+					<UserContext.Provider value={state.user}>
+						<MainStackNavigator />
+					</UserContext.Provider>
+				)}
+			</RootStack.Screen>
+		) : (
+			<RootStack.Screen name={'AuthStack'} component={AuthStackNavigator} />
+		);
+	}
 
 	return (
 		<AuthContext.Provider value={auth}>
@@ -78,11 +43,7 @@ export default function App() {
 						animationEnabled: false,
 					}}
 				>
-					{state.user ? (
-						<RootStack.Screen name={'MainStack'} component={MainStackNavigator} />
-					) : (
-						<RootStack.Screen name={'RootStack'} component={AuthStackNavigator} />
-					)}
+					{renderScreens()}
 				</RootStack.Navigator>
 			</NavigationContainer>
 		</AuthContext.Provider>
