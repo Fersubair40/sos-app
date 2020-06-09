@@ -5631,7 +5631,7 @@ expo-linking@~1.0.0:
     qs "^6.5.0"
     url-parse "^1.4.4"
 
-expo-location@~8.1.0:
+expo-location@^8.1.0, expo-location@~8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-8.1.0.tgz#6a71ad9a8b78d5f016a30a02013c3b28f46d0b1b"
   integrity sha512-G9JvsK1t9Z5Iybf+FCG81Jgm9Ee9leqpazxOPVabUJEWu/55Iex3yLGX04BuIA4ozAlJKBPzkhPdyqKdC7zrSw==
@@ -5655,6 +5655,11 @@ expo-pwa@0.0.19:
     commander "2.20.0"
     fs-extra "^9.0.0"
     update-check "1.5.3"
+
+expo-sms@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/expo-sms/-/expo-sms-8.1.0.tgz#a2da402129eb4e7d8632f26b47d9c81850c89144"
+  integrity sha512-nBEyDDAS6FqISqGjADjkqoCSi3Un1JSix/kxTgkTsyHforjuMM/v2omjPtout9IhUFbCg9VTe47AKCzENawOqQ==
 
 expo-splash-screen@^0.2.3:
   version "0.2.3"
