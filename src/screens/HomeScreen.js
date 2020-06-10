@@ -1,9 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import { Text, View, StyleSheet, Button, Alert } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ToastAndroid, Alert } from 'react-native';
 import * as Location from 'expo-location';
-import AsyncStorage from '@react-native-community/async-storage';
-import * as SMS from 'expo-sms';
+import SmsAndroid from 'react-native-get-sms-android';
 
 import { Loading } from '../components/Loading';
 import { HeaderIconButton } from '../components/HeaderIconButton';
@@ -23,7 +22,7 @@ export default function HomeScreen({ navigation }) {
 	const [location, setLocation] = React.useState(null);
 	const [errorMsg, setErrorMsg] = React.useState(null);
 	const [data, setData] = React.useState(initialValue);
-	const [number, setNumber] = React.useState('');
+
 	const [loading, setLoading] = React.useState(true);
 
 	React.useEffect(() => {
@@ -51,6 +50,7 @@ export default function HomeScreen({ navigation }) {
 				setLoading(false);
 			});
 	}, [token, user_id]);
+	// console.log(data.data);
 
 	React.useEffect(() => {
 		(async () => {
@@ -76,13 +76,30 @@ export default function HomeScreen({ navigation }) {
 		if (loading) {
 			return <Loading loading={loading} />;
 		} else {
-			const isAvailable = SMS.isAvailableAsync();
-			if (isAvailable) {
-				const { result } = SMS.sendSMSAsync(['7686688687', data.data[1]], 'My sample HelloWorld message');
-				return <Button onPress={() => [result]} title={'pressme'} />;
-			} else {
-				Alert('sms is not avaiable');
-			}
+			let phoneNumbers = {
+				addressList: ['+911212121212', '+911212121212'],
+			};
+			let message = 'This is automated test message';
+
+			const sendSms = () => {
+				SmsAndroid.autoSend(
+					JSON.stringify(phoneNumbers),
+					message,
+					(fail) => {
+						console.log('Failed with this error: ' + fail);
+					},
+					(success) => {
+						console.log('SMS sent successfully' + success);
+					}
+				);
+			};
+			return (
+				<View style={styles.container}>
+					<TouchableOpacity style={styles.button} onPress={sendSms()}>
+						<Text>Send SMS</Text>
+					</TouchableOpacity>
+				</View>
+			);
 		}
 	}
 
@@ -92,6 +109,14 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	button: {
+		padding: 10,
+		borderWidth: 0.5,
+		borderColor: '#bbb',
+		margin: 10,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
