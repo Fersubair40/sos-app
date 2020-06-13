@@ -1,8 +1,11 @@
 rootProject.name = 'emergency'
+include ':react-native-sms-x'
+project(':react-native-sms-x').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sms-x/android/app')
 include ':react-native-secure-storage'
 project(':react-native-secure-storage').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-secure-storage/android')
 include ':react-native-safe-area-context'
 project(':react-native-safe-area-context').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-safe-area-context/android')
+
 
 apply from: '../node_modules/react-native-unimodules/gradle.groovy'
 includeUnimodulesProjects()

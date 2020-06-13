@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView, ToastAndroid } from 'react-native';
 import Heading from '../components/Heading';
 import Input from '../components/Input';
 import FilledButton from '../components/FilledButton';
@@ -30,42 +30,44 @@ export default function LoginScreen({ navigation }) {
 		setvisibleToast(true);
 	};
 	return (
-		<View style={styles.container}>
-			<Heading style={styles.title}>Login</Heading>
-			<Error error={error} />
-			<Input style={styles.input} placeholder={'Username'} value={username} onChangeText={setUsername} />
-			<Input
-				style={styles.input}
-				placeholder={'Password'}
-				secureTextEntry
-				value={password}
-				onChangeText={setPassword}
-			/>
-			<FilledButton
-				title={'lOGIN'}
-				style={styles.loginbutton}
-				onPress={async () => {
-					try {
-						setLoading(true);
-						await login(username, password);
-						setLoading(false);
-						handleButtonPress();
-						// navigation.navigate('LoginStack');
-					} catch (error) {
-						setError(error.message);
-						setLoading(false);
-					}
-				}}
-			/>
-			<TextButton
-				title={'Dont have an accont? Create one '}
-				onPress={() => {
-					navigation.navigate('Registration');
-				}}
-			/>
-			<Loading loading={loading} />
-			<Toast style={styles.toast} visible={visibleToast} message="Login Successfully" />
-		</View>
+		<ScrollView>
+			<View style={styles.container}>
+				<Heading style={styles.title}>Login</Heading>
+				<Error error={error} />
+				<Input style={styles.input} placeholder={'Username'} value={username} onChangeText={setUsername} />
+				<Input
+					style={styles.input}
+					placeholder={'Password'}
+					secureTextEntry
+					value={password}
+					onChangeText={setPassword}
+				/>
+				<FilledButton
+					title={'lOGIN'}
+					style={styles.loginbutton}
+					onPress={async () => {
+						try {
+							setLoading(true);
+							await login(username, password);
+							setLoading(false);
+							handleButtonPress();
+							// navigation.navigate('LoginStack');
+						} catch (error) {
+							setError(error.message);
+							setLoading(false);
+						}
+					}}
+				/>
+				<TextButton
+					title={'Dont have an accont? Create one '}
+					onPress={() => {
+						navigation.navigate('Registration');
+					}}
+				/>
+				<Loading loading={loading} />
+				<Toast style={styles.toast} visible={visibleToast} message="Login Successfully" />
+			</View>
+		</ScrollView>
 	);
 }
 
@@ -77,7 +79,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	title: {
-		// marginVertical:28,
 		marginBottom: 40,
 	},
 	input: {
@@ -85,5 +86,8 @@ const styles = StyleSheet.create({
 	},
 	loginbutton: {
 		marginVertical: 32,
+	},
+	toast: {
+		paddingTop: Constants.statusBarHeight,
 	},
 });

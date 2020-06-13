@@ -2,7 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { Text, View, StyleSheet, TouchableOpacity, ToastAndroid, Alert } from 'react-native';
 import * as Location from 'expo-location';
-import SmsAndroid from 'react-native-get-sms-android';
+import SmsAndroid from 'react-native-android-sms';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { Loading } from '../components/Loading';
 import { HeaderIconButton } from '../components/HeaderIconButton';
@@ -21,6 +22,7 @@ export default function HomeScreen({ navigation }) {
 	const initialValue = [];
 	const [location, setLocation] = React.useState(null);
 	const [errorMsg, setErrorMsg] = React.useState(null);
+	const [number, setNumber] = React.useState(initialValue);
 	const [data, setData] = React.useState(initialValue);
 
 	const [loading, setLoading] = React.useState(true);
@@ -50,7 +52,6 @@ export default function HomeScreen({ navigation }) {
 				setLoading(false);
 			});
 	}, [token, user_id]);
-	// console.log(data.data);
 
 	React.useEffect(() => {
 		(async () => {
@@ -62,27 +63,65 @@ export default function HomeScreen({ navigation }) {
 			let location = await Location.getCurrentPositionAsync({});
 			setLocation(location);
 		})();
-	});
+	}, []);
 
 	let text = 'Waiting..';
 	if (errorMsg) {
 		text = errorMsg;
 	} else if (location) {
-		text = JSON.stringify(location);
-		//   console.log(text);
+		text = JSON.parse(JSON.stringify(location));
 	}
 
 	function renderNumber() {
 		if (loading) {
 			return <Loading loading={loading} />;
 		} else {
-			let phoneNumbers = {
-				addressList: ['+911212121212', '+911212121212'],
+			const emergencyNumber = {
+				firstNumber: data.data[0],
+				sencondNumber: data.data[1],
 			};
-			let message = 'This is automated test message';
+			AsyncStorage.setItem('emergencyNumber', JSON.stringify(emergencyNumber));
 
-			const sendSms = () => {
+			function sendSmsFunction() {
+				let phoneNumbers = {
+					addressList: ['+911212121212', '+911212121212'],
+				};
+				let message = 'This is automated test message';
 				SmsAndroid.autoSend(
+					phoneNumbers,
+					message,
+					(fail) => {
+						console.log('Failed with this error: ' + fail);
+					},
+					(success) => {
+						console.log('SMS sent successfully' + success);
+					}
+				);
+			}
+			return (
+				<View style={styles.container}>
+					<TouchableOpacity style={styles.button} onPress={sendSmsFunction()}>
+						<Text> Send SMS </Text>{' '}
+					</TouchableOpacity>{' '}
+				</View>
+			);
+		}
+	}
+
+	React.useEffect(() => {
+		AsyncStorage.getItem('emergencyNumber').then((emergencyNumber) => {
+			setNumber(JSON.parse(emergencyNumber));
+		});
+	}, []);
+
+	function isNumberSaved() {
+		if (number) {
+			function sendSmsFunction() {
+				var phoneNumbers = {
+					addressList: [number.firstNumber, number.sencondNumber],
+				};
+				var message = `See my location here: http://maps.google.com/maps?q=${text.coords.latitude},${text.coords.longitude} please pay close attention to where i am `;
+				SmsAndroid.send(
 					JSON.stringify(phoneNumbers),
 					message,
 					(fail) => {
@@ -92,18 +131,26 @@ export default function HomeScreen({ navigation }) {
 						console.log('SMS sent successfully' + success);
 					}
 				);
-			};
+			}
 			return (
-				<View style={styles.container}>
-					<TouchableOpacity style={styles.button} onPress={sendSms()}>
-						<Text>Send SMS</Text>
-					</TouchableOpacity>
+				<View>
+					<Text> {number.firstNumber} </Text> <Text> {number.sencondNumber} </Text>
+					<TouchableOpacity
+						style={styles.button}
+						onPress={() => {
+							sendSmsFunction();
+						}}
+					>
+						<Text> Send SMS </Text>{' '}
+					</TouchableOpacity>{' '}
 				</View>
 			);
+		} else {
+			return renderNumber();
 		}
 	}
 
-	return <View style={styles.container}>{renderNumber()}</View>;
+	return <View style={styles.container}> {isNumberSaved()} </View>;
 }
 
 const styles = StyleSheet.create({
