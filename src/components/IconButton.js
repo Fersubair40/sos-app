@@ -8,7 +8,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 export function IconButton({ name, style, onPress }) {
 	return (
 		<TouchableOpacity style={[styles.container, style]} onPress={onPress}>
-			<Entypo  name={name} size={20} color={'#45046a'} />
+			<Entypo  name={name} size={20} color={'#420a2b'} />
 		</TouchableOpacity>
 	);
 }

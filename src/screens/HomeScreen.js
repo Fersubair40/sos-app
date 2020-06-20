@@ -1,16 +1,26 @@
 import React from 'react';
 import axios from 'axios';
-import { Text, View, StyleSheet, TouchableOpacity, ToastAndroid, Alert } from 'react-native';
+import { View, StyleSheet, ToastAndroid } from 'react-native';
 import * as Location from 'expo-location';
 import SmsAndroid from 'react-native-android-sms';
 import AsyncStorage from '@react-native-community/async-storage';
+import Constants from 'expo-constants';
+import { Button, Icon, Text } from 'react-native-magnus';
+import { Card } from 'react-native-elements';
 
 import { Loading } from '../components/Loading';
 import { HeaderIconButton } from '../components/HeaderIconButton';
 import { AuthContext } from '../contexts/AuthContext';
-
 import { BASE_URL } from '../config';
 import { UserContext } from '../contexts/UserContext';
+
+const Toast = ({ visible, message }) => {
+	if (visible) {
+		ToastAndroid.showWithGravityAndOffset(message, ToastAndroid.LONG, ToastAndroid.CENTER, 25, 50);
+		return null;
+	}
+	return null;
+};
 
 export default function HomeScreen({ navigation }) {
 	const { logout } = React.useContext(AuthContext);
@@ -24,8 +34,14 @@ export default function HomeScreen({ navigation }) {
 	const [errorMsg, setErrorMsg] = React.useState(null);
 	const [number, setNumber] = React.useState(initialValue);
 	const [data, setData] = React.useState(initialValue);
-
 	const [loading, setLoading] = React.useState(true);
+	const [visibleToast, setvisibleToast] = React.useState(false);
+
+	React.useEffect(() => setvisibleToast(false), [visibleToast]);
+
+	const handleButtonPress = () => {
+		setvisibleToast(true);
+	};
 
 	React.useEffect(() => {
 		navigation.setOptions({
@@ -62,6 +78,7 @@ export default function HomeScreen({ navigation }) {
 
 			let location = await Location.getCurrentPositionAsync({});
 			setLocation(location);
+			setLoading(false);
 		})();
 	}, []);
 
@@ -83,12 +100,12 @@ export default function HomeScreen({ navigation }) {
 			AsyncStorage.setItem('emergencyNumber', JSON.stringify(emergencyNumber));
 
 			function sendSmsFunction() {
-				let phoneNumbers = {
-					addressList: ['+911212121212', '+911212121212'],
+				var phoneNumbers = {
+					addressList: [data.data[0], data.data[1]],
 				};
-				let message = 'This is automated test message';
-				SmsAndroid.autoSend(
-					phoneNumbers,
+				var message = `See my location here: http://maps.google.com/maps?q=${text.coords.latitude},${text.coords.longitude} please pay close attention to where i am `;
+				SmsAndroid.send(
+					JSON.stringify(phoneNumbers),
 					message,
 					(fail) => {
 						console.log('Failed with this error: ' + fail);
@@ -100,9 +117,26 @@ export default function HomeScreen({ navigation }) {
 			}
 			return (
 				<View style={styles.container}>
-					<TouchableOpacity style={styles.button} onPress={sendSmsFunction()}>
-						<Text> Send SMS </Text>{' '}
-					</TouchableOpacity>{' '}
+					<Text fontSize="6xl">{data.data[0]}</Text>
+
+					<Text> {data.data[1]}</Text>
+					<Text>Click on Butonn below in time of emergency</Text>
+					<Button
+						onPress={() => {
+							sendSmsFunction();
+							handleButtonPress();
+						}}
+						bg="red500"
+						h={60}
+						w={60}
+						mx="xl"
+						rounded="circle"
+						shadow="md"
+						borderless
+					>
+						<Icon name="location-pin" size={4} color="white" fontFamily="Entypo" />
+					</Button>
+					<Toast style={styles.toast} visible={visibleToast} message="Message Successfully sent" />
 				</View>
 			);
 		}
@@ -132,17 +166,29 @@ export default function HomeScreen({ navigation }) {
 					}
 				);
 			}
+
 			return (
-				<View>
-					<Text> {number.firstNumber} </Text> <Text> {number.sencondNumber} </Text>
-					<TouchableOpacity
-						style={styles.button}
+				<View style={styles.view}>
+					
+					<Button
 						onPress={() => {
 							sendSmsFunction();
+							handleButtonPress();
 						}}
+						mb={200}
+						bg="brand900"
+						h={130}
+						w={130}
+						mx="xl"
+						rounded="circle"
+						shadow="2xl"
+						borderWidth={10}
+						// borderColor="red500"
+						underlayColor="brand900"
 					>
-						<Text> Send SMS </Text>{' '}
-					</TouchableOpacity>{' '}
+						<Icon name="location-pin" color="white" fontFamily="Entypo" />
+					</Button>
+					<Toast style={styles.toast} visible={visibleToast} message="Message Successfully sent" />
 				</View>
 			);
 		} else {
@@ -150,7 +196,7 @@ export default function HomeScreen({ navigation }) {
 		}
 	}
 
-	return <View style={styles.container}> {isNumberSaved()} </View>;
+	return <View style={styles.container}>{isNumberSaved()}</View>;
 }
 
 const styles = StyleSheet.create({
@@ -166,5 +212,12 @@ const styles = StyleSheet.create({
 		margin: 10,
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	toast: {
+		paddingTop: Constants.statusBarHeight,
+	},
+	view: {
+		paddingLeft: 50,
+		paddingRight: 0
 	},
 });

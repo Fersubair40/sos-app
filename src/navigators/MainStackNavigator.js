@@ -9,7 +9,13 @@ const MainStack = createStackNavigator();
 export default function MainStackNavigator() {
 	return (
 		<MainStack.Navigator>
-			<MainStack.Screen name={'Home'} component={HomeScreen} />
+			<MainStack.Screen
+				name={'Home'}
+				component={HomeScreen}
+				options={{
+					title: 'Home',
+				}}
+			/>
 		</MainStack.Navigator>
 
 		// <LoginScreen/>

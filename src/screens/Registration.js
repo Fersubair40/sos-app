@@ -1,16 +1,19 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, ToastAndroid } from 'react-native';
 import Constants from 'expo-constants';
+import * as Contacts from 'expo-contacts';
+import { Button, Icon, Div } from 'react-native-magnus';
+
 import Heading from '../components/Heading';
 import Input from '../components/Input';
 import FilledButton from '../components/FilledButton';
-
 import { Error } from '../components/Error';
 import { IconButton } from '../components/IconButton';
 import { AuthContext } from '../contexts/AuthContext';
 import { Loading } from '../components/Loading';
 
 import { selectContactPhone } from 'react-native-select-contact';
+import { requestPermissionsAsync } from 'expo-location';
 
 const Toast = ({ visible, message }) => {
 	if (visible) {
@@ -34,11 +37,21 @@ export default function RegistratonScreen({ navigation }) {
 
 	React.useEffect(() => setvisibleToast(false), [visibleToast]);
 
+	// React.useEffect(() => {
+	// 	(async () => {
+	// 		const { status } = await Contacts.requestPermissionsAsync();
+	// 		if (status == 'granted') {
+	// 			console.log('permission granted');
+	// 		}
+	// 	})();
+	// }, []);
+
 	const handleButtonPress = () => {
 		setvisibleToast(true);
 	};
 
 	const getPhoneNumber = () => {
+		requestPermissionsAsync();
 		return selectContactPhone().then((selection) => {
 			let { contact, selectedPhone } = selection;
 
@@ -74,13 +87,6 @@ export default function RegistratonScreen({ navigation }) {
 					value={password}
 					onChangeText={setPassword}
 				/>
-				<IconButton
-					style={styles.closeIcon}
-					name={'add-user'}
-					onPress={() => {
-						getPhoneNumber();
-					}}
-				/>
 
 				<Input
 					style={styles.input}
@@ -88,20 +94,48 @@ export default function RegistratonScreen({ navigation }) {
 					value={con1}
 					onChangeText={setContacts}
 				/>
-				<IconButton
-					style={styles.closeIcon}
-					name={'add-user'}
-					onPress={() => {
-						getPhoneNumbe();
-					}}
-				/>
 
+				<Button
+					// mt="lg"
+					ml="3xl"
+					px="xl"
+					// py="lg"
+					// p={12}
+					bg="brand900"
+					rounded="circle"
+					color="white"
+					shadow={2}
+					onPress={() => {
+						getPhoneNumber();
+					}}
+					prefix={<Icon name="add-user" mr="sm" color="white" fontFamily="Entypo" />}
+				>
+					Select Contact
+				</Button>
+				
 				<Input
 					style={styles.input}
 					placeholder={'Emergency Conatact 2'}
 					value={con2}
 					onChangeText={setContact2}
 				/>
+				<Button
+					style={styles.contact}
+					// mt="lg"
+					ml="3xl"
+					px="xl"
+					// py="lg"
+					bg="brand900"
+					rounded="circle"
+					color="white"
+					shadow={2}
+					onPress={() => {
+						getPhoneNumbe();
+					}}
+					prefix={<Icon name="add-user" mr="sm" color="white" fontFamily="Entypo" />}
+				>
+					Select Contact
+				</Button>
 				<Input
 					style={styles.input}
 					placeholder={'Phone Number'}
@@ -156,4 +190,8 @@ const styles = StyleSheet.create({
 	toast: {
 		paddingTop: Constants.statusBarHeight,
 	},
+	contact: {
+		alignItems: 'center',
+		justifyContent: 'center'
+	}
 });

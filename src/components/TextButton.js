@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   text: {
-    color:'#45046a',
+    color:'#420a2b',
     fontWeight: '500',
     fontSize: 14,
   },

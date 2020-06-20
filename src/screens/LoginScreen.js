@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, ToastAndroid } from 'react-native';
+import { View, StyleSheet, ToastAndroid, Platform, PermissionsAndroid } from 'react-native';
+import Constants from 'expo-constants';
+
 import Heading from '../components/Heading';
 import Input from '../components/Input';
 import FilledButton from '../components/FilledButton';
@@ -26,48 +28,96 @@ export default function LoginScreen({ navigation }) {
 
 	React.useEffect(() => setvisibleToast(false), [visibleToast]);
 
+	React.useEffect(() => {
+		(async () => {
+			if (Platform.OS === 'android') {
+				try {
+					if (!(await checkPermissions())) {
+						await requestPermissions();
+					}
+				} catch (e) {
+					console.error(e);
+				}
+			}
+		})();
+	}, []);
+	async function checkPermissions() {
+		console.log('checking SMS permissions');
+		let hasPermissions = false;
+		try {
+			hasPermissions = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.SEND_SMS);
+			if (!hasPermissions) return false;
+		} catch (e) {
+			console.error(e);
+		}
+		return hasPermissions;
+	}
+
+	async function requestPermissions() {
+		let granted = {};
+		try {
+			console.log('requesting SMS permissions');
+			granted = await PermissionsAndroid.requestMultiple(
+				[PermissionsAndroid.PERMISSIONS.READ_CONTACTS, PermissionsAndroid.PERMISSIONS.SEND_SMS],
+				{
+					title: 'Example App SMS Features',
+					message: 'Example SMS App needs access to demonstrate SMS features',
+					buttonNeutral: 'Ask Me Later',
+					buttonNegative: 'Cancel',
+					buttonPositive: 'OK',
+				}
+			);
+			console.log(granted);
+			if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+				console.log('You can use SMS features');
+			} else {
+				console.log('SMS permission denied');
+			}
+		} catch (err) {
+			console.warn(err);
+		}
+	}
+
 	const handleButtonPress = () => {
 		setvisibleToast(true);
 	};
 	return (
-		<ScrollView>
-			<View style={styles.container}>
-				<Heading style={styles.title}>Login</Heading>
-				<Error error={error} />
-				<Input style={styles.input} placeholder={'Username'} value={username} onChangeText={setUsername} />
-				<Input
-					style={styles.input}
-					placeholder={'Password'}
-					secureTextEntry
-					value={password}
-					onChangeText={setPassword}
-				/>
-				<FilledButton
-					title={'lOGIN'}
-					style={styles.loginbutton}
-					onPress={async () => {
-						try {
-							setLoading(true);
-							await login(username, password);
-							setLoading(false);
-							handleButtonPress();
-							// navigation.navigate('LoginStack');
-						} catch (error) {
-							setError(error.message);
-							setLoading(false);
-						}
-					}}
-				/>
-				<TextButton
-					title={'Dont have an accont? Create one '}
-					onPress={() => {
-						navigation.navigate('Registration');
-					}}
-				/>
-				<Loading loading={loading} />
-				<Toast style={styles.toast} visible={visibleToast} message="Login Successfully" />
-			</View>
-		</ScrollView>
+		<View style={styles.container}>
+			<Heading style={styles.title}>Login</Heading>
+			<Error error={error} />
+			<Input style={styles.input} placeholder={'Username'} value={username} onChangeText={setUsername} />
+			<Input
+				style={styles.input}
+				placeholder={'Password'}
+				secureTextEntry
+				value={password}
+				onChangeText={setPassword}
+			/>
+			<FilledButton
+				title={'lOGIN'}
+				style={styles.loginbutton}
+				onPress={async () => {
+					try {
+						setLoading(true);
+						await login(username, password);
+						setLoading(false);
+						handleButtonPress();
+						// navigation.navigate('LoginStack');
+					} catch (error) {
+						setError(error.message);
+						setLoading(false);
+					}
+				}}
+			/>
+			<TextButton
+				title={'Dont have an accont? Create one '}
+				onPress={() => {
+					navigation.navigate('Registration');
+				}}
+			/>
+			<Loading loading={loading} />
+			<Toast style={styles.toast} visible={visibleToast} message="Logged In Successfully" />
+		</View>
 	);
 }
 
@@ -82,7 +132,7 @@ const styles = StyleSheet.create({
 		marginBottom: 40,
 	},
 	input: {
-		marginVertical: 8,
+		marginVertical:8,
 	},
 	loginbutton: {
 		marginVertical: 32,

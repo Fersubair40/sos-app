@@ -11,12 +11,12 @@ export default function FilledButton({ title, style, onPress }) {
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor:"#45046a",
+        backgroundColor:"#420a2b",
         width: '100%',
         alignItems: 'center',
         justifyContent:'center',
-        padding: 20,
-        borderRadius:8,
+        padding: 15,
+        borderRadius:18,
     },
     text:{
         color:'white',
