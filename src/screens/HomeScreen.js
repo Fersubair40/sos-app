@@ -33,7 +33,7 @@ export default function HomeScreen({ navigation }) {
     const [location, setLocation] = React.useState(null);
     const [errorMsg, setErrorMsg] = React.useState(null);
     const [number, setNumber] = React.useState(initialValue);
-    const [data, setData] = React.useState(initialValue);
+    const [data, setData] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [visibleToast, setvisibleToast] = React.useState(false);
 
@@ -65,6 +65,7 @@ export default function HomeScreen({ navigation }) {
             })
             .then(({ data }) => {
                 setData(data);
+                // console.log(data.data);
                 setLoading(false);
             });
     }, [token, user_id]);
@@ -97,8 +98,9 @@ export default function HomeScreen({ navigation }) {
                 firstNumber: data.data[0],
                 sencondNumber: data.data[1],
             };
-            AsyncStorage.setItem('emergencyNumber', JSON.stringify(emergencyNumber));
-
+            console.log(emergencyNumber);
+              AsyncStorage.setItem('emergencyNumber', JSON.stringify(emergencyNumber));
+         
             function sendSmsFunction() {
                 var phoneNumbers = {
                     addressList: [data.data[0], data.data[1]],
@@ -143,16 +145,20 @@ export default function HomeScreen({ navigation }) {
     }
 
     React.useEffect(() => {
-        AsyncStorage.getItem('emergencyNumber').then((emergencyNumber) => {
-            setNumber(JSON.parse(emergencyNumber));
-        });
+        
+           AsyncStorage.getItem('emergencyNumber').then((emergencyNumber) => {
+                setNumber(JSON.parse(emergencyNumber));
+                // console.log(number);
+        })
+        
     }, []);
 
     function isNumberSaved() {
         if (number) {
             function sendSmsFunction() {
                 var phoneNumbers = {
-                    addressList: [number.firstNumber, number.sencondNumber],
+                    
+                    addressList: [number.firstNumber, number.sencondNumber ],
                 };
                 var message = `See my location here: http://maps.google.com/maps?q=${text.coords.latitude},${text.coords.longitude} please pay close attention to where i am `;
                 SmsAndroid.send(

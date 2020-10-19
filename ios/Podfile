@@ -45,6 +45,9 @@ target 'emergency' do
   use_native_modules!
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
-  pod 'RNSecureStorage', :path => '../node_modules/react-native-secure-storage'
+
+  pod 'RCTSelectContact', :path => '../node_modules/react-native-select-contact'
+
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
 end
