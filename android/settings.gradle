@@ -1,8 +1,10 @@
 rootProject.name = 'emergency'
+include ':@react-native-community_async-storage'
+project(':@react-native-community_async-storage').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/async-storage/android')
+include ':react-native-select-contact'
+project(':react-native-select-contact').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-select-contact/android/app')
 include ':react-native-sms-x'
 project(':react-native-sms-x').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sms-x/android/app')
-include ':react-native-secure-storage'
-project(':react-native-secure-storage').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-secure-storage/android')
 include ':react-native-safe-area-context'
 project(':react-native-safe-area-context').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-safe-area-context/android')
 

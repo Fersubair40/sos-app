@@ -6,7 +6,8 @@ import android.net.Uri;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import li.yunqi.rnsecurestorage.RNSecureStoragePackage;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+import com.streem.selectcontact.SelectContactPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
