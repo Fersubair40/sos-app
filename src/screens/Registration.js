@@ -34,17 +34,19 @@ export default function RegistratonScreen({ navigation }) {
 	const [loading, setLoading] = React.useState(false);
 	const [error, setError] = React.useState('');
 	const [visibleToast, setvisibleToast] = React.useState(false);
+	const [btnDisabled , setBtnDisabled] = React.useState(true)
 
 	React.useEffect(() => setvisibleToast(false), [visibleToast]);
 
-	// React.useEffect(() => {
-	// 	(async () => {
-	// 		const { status } = await Contacts.requestPermissionsAsync();
-	// 		if (status == 'granted') {
-	// 			console.log('permission granted');
-	// 		}
-	// 	})();
-	// }, []);
+
+	const unDisableBtn = () => {
+		if (username && fullName && password && con1 !== ''){
+			setBtnDisabled(false)
+		} else {
+			true
+		}
+	}
+
 
 	const handleButtonPress = () => {
 		setvisibleToast(true);
@@ -68,6 +70,12 @@ export default function RegistratonScreen({ navigation }) {
 			console.log(selectedPhone.number);
 		});
 	};
+
+	const handleRequestError = () =>{
+		if (register.status !== 200) {
+			setError(`Username ${username} already taken`)
+		}
+	}
 
 	const emergency_contacts = [];
 	emergency_contacts.push(con1, con2);
@@ -148,11 +156,28 @@ export default function RegistratonScreen({ navigation }) {
 					onPress={async () => {
 						try {
 							setLoading(true);
-							await register(username, fullName, password, emergency_contacts, phoneNumber);
-							handleButtonPress();
-							navigation.navigate('LoginStack');
+							if (username && fullName && password && emergency_contacts && phoneNumber !== ""){
+								await register(username, fullName, password, emergency_contacts, phoneNumber);
+								setLoading(false)
+								handleButtonPress();
+								navigation.navigate('LoginStack');
+							}  else if (username === "") {
+								setError(" Username cannot be blank")	
+								setLoading(false)
+							} else if (fullName === "") {
+								setError("Fullname cannot be blank")
+								setLoading(false)
+							} else if (password === ""){
+								setError("password cannot be blank")
+								setLoading(false)
+							} 
+							else {
+								setError('One Emegency number is required ')
+								setLoading(false)
+							}
+
 						} catch (error) {
-							setError(error.message);
+						handleRequestError()
 							setLoading(false);
 						}
 					}}

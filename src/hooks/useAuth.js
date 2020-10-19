@@ -38,10 +38,11 @@ export function useAuth() {
 	const auth = React.useMemo(
 		() => ({
 			login: async (username, password) => {
-				const { data } = await axios.post(`${BASE_URL}/login`, {
+				const  data  = await axios.post(`${BASE_URL}/login`, {
 					 username,
 					password,
 				});
+				// return data;
 				const user = {
 					user_id: data.user_id,
 					token: data.access_token,
