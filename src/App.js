@@ -10,6 +10,7 @@ import MainStackNavigator from './navigators/MainStackNavigator';
 import { useAuth } from './hooks/useAuth';
 import { UserContext } from './contexts/UserContext';
 import SplashScreen from './screens/SplashScreen';
+import Widget from './screens/Widget';
 
 
 const RootStack = createStackNavigator();
@@ -48,6 +49,7 @@ export default function App() {
 					>
 						{renderScreens()}
 					</RootStack.Navigator>
+					<Widget/>
 				</NavigationContainer>
 			</AuthContext.Provider>
 		</ThemeProvider>
