@@ -37,6 +37,8 @@ export default function HomeScreen({ navigation }) {
     const [loading, setLoading] = React.useState(true);
     const [visibleToast, setvisibleToast] = React.useState(false);
 
+    const [dash, updateDash]= React.useState({})
+
     React.useEffect(() => setvisibleToast(false), [visibleToast]);
 
     const handleButtonPress = () => {
@@ -77,7 +79,10 @@ export default function HomeScreen({ navigation }) {
                 setErrorMsg('Permission to access location was denied');
             }
 
-            let location = await Location.getCurrentPositionAsync({});
+            let location = await Location.getCurrentPositionAsync({
+                enableHighAccuracy: true,
+                accuracy: Location.Accuracy.BestForNavigation
+            });
             setLocation(location);
             setLoading(false);
         })();
@@ -88,7 +93,22 @@ export default function HomeScreen({ navigation }) {
         text = errorMsg;
     } else if (location) {
         text = JSON.parse(JSON.stringify(location));
+        // console.log(text)
     }
+
+
+
+  
+   let  dataToBeSent = {}
+   if (location) {
+       
+     dataToBeSent = {
+        longitude: text.coords.longitude,
+        latitude: text.coords.latitude,
+        user_id: user_id
+    }
+   }
+   console.log(dataToBeSent)
 
     function renderNumber() {
         if (loading) {
@@ -194,8 +214,14 @@ export default function HomeScreen({ navigation }) {
                     >
                         SEND SMS
                     </Button>
+                    {/* <Button onPress={() => {
+                        navigation.navigate('Loc')
+                    }}>
+                        locv
+                    </Button> */}
                     <Toast style={styles.toast} visible={visibleToast} message="Message Successfully sent" />
                 </View>
+
             );
         } else {
             return renderNumber();

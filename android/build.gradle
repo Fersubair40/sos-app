@@ -2,10 +2,12 @@
 
 buildscript {
     ext {
+        googlePlayServicesLocationVersion = "17.0.0"  // Or higher.
         buildToolsVersion = "28.0.3"
         minSdkVersion = 21
         compileSdkVersion = 28
         targetSdkVersion = 28
+        appCompatVersion = "1.1.0"
     }
     repositories {
         google()
@@ -25,10 +27,19 @@ allprojects {
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
+            
         }
         maven {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
+        }
+
+        maven {          // Required for react-native-background-geolocation
+           url("${project(':react-native-background-geolocation').projectDir}/libs")
+        }
+        maven {
+           // Required for react-native-background-fetch
+           url("${project(':react-native-background-fetch').projectDir}/libs")
         }
 
         google()
