@@ -7,7 +7,8 @@ export default function Widget() {
   React.useEffect(() => {
     SharedStorage.set(JSON.stringify({ text: "click " }));
   }, []);
-  return(
-      <Text>hi</Text>
+  return (
+    <>
+    </>
   )
 }
