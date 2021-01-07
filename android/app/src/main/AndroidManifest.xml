@@ -40,9 +40,7 @@
                 android:resource="@xml/emergency_app_info" />
         </receiver>
 
-        <meta-data 
-            android:name="com.transistorsoft.locationmanager.license" 
-            android:value="YOUR_LICENCE_KEY_HERE" />
+       
 
         <meta-data
             android:name="expo.modules.updates.EXPO_UPDATE_URL"

@@ -133,7 +133,8 @@ android {
 
     defaultConfig {
         applicationId "com.emergency"
-        minSdkVersion rootProject.ext.minSdkVersion
+        minSdkVersion 21
+        multiDexEnabled true
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
@@ -192,6 +193,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support:multidex:1.0.3'
     implementation project(':@react-native-community_async-storage')
     implementation project(':react-native-select-contact')
     implementation project(':react-native-safe-area-context')

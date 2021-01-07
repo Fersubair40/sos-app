@@ -49,7 +49,6 @@ export default function App() {
 					>
 						{renderScreens()}
 					</RootStack.Navigator>
-					<Widget/>
 				</NavigationContainer>
 			</AuthContext.Provider>
 		</ThemeProvider>
