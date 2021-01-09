@@ -23,7 +23,6 @@ export default function App() {
 		if (state.loading) {
 			return <RootStack.Screen name={'Splsh'} component={SplashScreen} />;
 		}
-
 		return state.user ? (
 			<RootStack.Screen name={'MainStack'}>
 				{() => (
@@ -33,6 +32,7 @@ export default function App() {
 				)}
 			</RootStack.Screen>
 		) : (
+
 			<RootStack.Screen name={'AuthStack'} component={AuthStackNavigator} />
 		);
 	}

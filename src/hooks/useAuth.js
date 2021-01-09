@@ -6,17 +6,9 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { BASE_URL } from "../config";
 import { createAction } from "../config/createAction";
 import { sleep } from "../utils/sleep";
+// import { refresh } from "../utils/refresh";
 
 export function useAuth() {
-  const [tokens, setToken] = React.useState(null);
-
-  React.useEffect(() => {
-    AsyncStorage.getItem("user").then((token) => {
-      setToken(JSON.parse(token.token));
-      console.log(tokens);
-    });
-  }, []);
-
   const [state, dispatch] = React.useReducer(
     (state, action) => {
       switch (action.type) {
@@ -78,19 +70,19 @@ export function useAuth() {
           phoneNumber,
         });
       },
-    //   sendLoc: async (alert_type, latitude, longitude, user_id, timestamp) => {
-    //     await axios.post(
-    //       `${BASE_URL}/sendalert`,
-    //       {
-    //         alert_type,
-    //         latitude,
-    //         longitude,
-    //         user_id,
-    //         timestamp,
-    //       },
-    //       tokens
-    //     );
-    //   },
+      //   sendLoc: async (alert_type, latitude, longitude, user_id, timestamp) => {
+      //     await axios.post(
+      //       `${BASE_URL}/sendalert`,
+      //       {
+      //         alert_type,
+      //         latitude,
+      //         longitude,
+      //         user_id,
+      //         timestamp,
+      //       },
+      //       tokens
+      //     );
+      //   },
     }),
     []
   );

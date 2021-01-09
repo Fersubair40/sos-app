@@ -71,17 +71,21 @@ export default function HomeScreen({ navigation }) {
   }, [navigation]);
 
   React.useEffect(() => {
-    axios
-      .get(`${BASE_URL}/emergency-contacts/${user_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        setData(data);
-        // console.log(data.data);
-        setLoading(false);
-      });
+    (async () => {
+      let response = await axios
+        .get(`${BASE_URL}/emergency-contacts/${user_id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(({ data }) => {
+          setData(data);
+          // console.log(data.data);
+          setLoading(false);
+        });
+
+      return response;
+    })();
   }, [token, user_id]);
 
   function sendLoc() {
@@ -93,15 +97,15 @@ export default function HomeScreen({ navigation }) {
         user_id: user_id.toString(),
         timestamp: timestamp.toString(),
       };
-      // console.log(dataToBeSent)
+      // console.log(dataToBeSent);
       axios
         .post(`${BASE_URL}/sendalert`, dataToBeSent, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
-        .then(({ res }) => {
-          return res;
+        .then((res) => {
+          console.log(res);
         });
     }
   }
