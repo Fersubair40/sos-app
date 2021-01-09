@@ -132,7 +132,7 @@ android {
 
     defaultConfig {
         applicationId "com.emergency"
-        minSdkVersion ootProject.ext.minSdkVersion
+        minSdkVersion rootProject.ext.minSdkVersion
         multiDexEnabled true
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
