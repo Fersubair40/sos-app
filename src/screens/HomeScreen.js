@@ -67,7 +67,18 @@ export default function HomeScreen({ navigation }) {
           }}
         />
       ),
+     
     });
+    // navigation.setOptions({
+    //   headerRight: () => (
+    //     <HeaderIconButton
+    //       name={"settings"}
+    //       onPress={() => {
+    //         logout();
+    //       }}
+    //     />
+    //   ),
+    // });
   }, [navigation]);
 
   React.useEffect(() => {

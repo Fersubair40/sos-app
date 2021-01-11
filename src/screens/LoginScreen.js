@@ -151,7 +151,7 @@ export default function LoginScreen({ navigation }) {
       <TextButton
         title={"Dont have an account? Create one "}
         onPress={() => {
-          navigation.navigate("Registration");
+          navigation.navigate("OnBoard");
         }}
       />
       <Loading loading={loading} />

@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import RegistratonScreen from '../screens/Registration';
 import LoginScreen from '../screens/LoginScreen';
+import ProfileRegistration from '../screens/ProfileRegistration';
+
 
 const LoginStack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -30,6 +32,7 @@ export default function AuthStackNavigator() {
 				)}
 			</AuthStack.Screen>
 			<AuthStack.Screen name={'Registration'} component={RegistratonScreen} />
+			<AuthStack.Screen name={"OnBoard"} component={ProfileRegistration} />
 		</AuthStack.Navigator>
 
 		// <LoginScreen/>

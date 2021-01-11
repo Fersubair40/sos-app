@@ -10259,11 +10259,6 @@ react-native-magnus@^1.0.39:
   resolved "https://registry.yarnpkg.com/react-native-magnus/-/react-native-magnus-1.0.39.tgz#59d0c80248592ae23298ef0cf4d5498bcfd5a750"
   integrity sha512-Ku/ddeloTQrtpInmbn0hdlNiO0YhGRMhPL+d1S3V7IkybnbrDwSqoIg6kKfEtKhPzjgdRQfmS89YgBeViOSyjg==
 
-react-native-maps@^0.27.1:
-  version "0.27.1"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
-  integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
-
 react-native-modal@^11.5.6:
   version "11.5.6"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.5.6.tgz#bb25a78c35a5e24f45de060e5f64284397d38a87"

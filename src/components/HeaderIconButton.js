@@ -9,6 +9,6 @@ export function HeaderIconButton({ name, onPress }) {
 
 const styles = StyleSheet.create({
     container: {
-        marginRight: 16,
+        marginRight: 12,
     },
 });
