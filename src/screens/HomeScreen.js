@@ -216,7 +216,7 @@ export default function HomeScreen({ navigation }) {
       setNumber(JSON.parse(emergencyNumber));
       // console.log(number);
     });
-  }, []);
+  }, [token]);
 
   function isNumberSaved() {
     if (number) {

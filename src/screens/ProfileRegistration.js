@@ -22,6 +22,7 @@ export default function ProfileRegistration({ navigation }) {
 
     if (password !== confirmPassword && confirmPassword !== null) {
       setError("password doesn't match");
+      setDisableBtn(true);
     } else if (password === confirmPassword) {
       setError("");
     }
@@ -31,15 +32,15 @@ export default function ProfileRegistration({ navigation }) {
     navigation.navigate("Registration");
   };
 
-  const saveRegistration = () => {
-    if (username && fullName && password && confirmPassword !== null) {
+  const saveRegistration = async () => {
+    if (username && fullName && password && confirmPassword !== "") {
       const profileData = {
         username,
         fullName,
         password,
       };
-      console.log(profileData);
-      AsyncStorage.setItem("profile", JSON.stringify(profileData));
+    //   console.log(profileData);
+      await AsyncStorage.setItem("profile", JSON.stringify(profileData));
     }
   };
 

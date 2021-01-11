@@ -12,6 +12,7 @@ import { Error } from "../components/Error";
 import { IconButton } from "../components/IconButton";
 import { AuthContext } from "../contexts/AuthContext";
 import { Loading } from "../components/Loading";
+import { sleep } from "../utils/sleep";
 
 import { selectContactPhone } from "react-native-select-contact";
 import { requestPermissionsAsync } from "expo-location";
@@ -45,13 +46,17 @@ export default function RegistratonScreen({ navigation }) {
   const [profileData, setProfileData] = React.useState({});
 
   React.useEffect(() => {
-    AsyncStorage.getItem("profile").then((profile) => {
-	  setProfileData(JSON.parse(profile));
-	  console.log(profileData)
+    sleep(3000).then(() => {
+      AsyncStorage.getItem("profile").then((profile) => {
+        setProfileData(JSON.parse(profile));
+        console.log(profileData);
+      });
+	});
+	
+
     //   let { reg } = profileData;
     //   console.log(reg.password);
-    });
-  }, []);
+  }, [profileData]);
 
   React.useEffect(() => setvisibleToast(false), [visibleToast]);
 
