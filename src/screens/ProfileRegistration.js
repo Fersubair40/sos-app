@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
+import { MaterialIcons } from "@expo/vector-icons";
+
 import Input from "../components/Input";
 import Heading from "../components/Heading";
 import { Error } from "../components/Error";
@@ -36,7 +38,7 @@ export default function ProfileRegistration({ navigation }) {
         fullName,
         password,
       };
-      console.log(profileData)
+      console.log(profileData);
       AsyncStorage.setItem("profile", JSON.stringify(profileData));
     }
   };
@@ -76,16 +78,44 @@ export default function ProfileRegistration({ navigation }) {
         <TouchableOpacity
           style={styles.diableBtn}
           disabled={diableBtn}
-          onPress={next}
+          onPress={async () => {
+            await saveRegistration();
+            next();
+          }}
         >
-          <Text style={styles.text}> Next </Text>
+          <View
+            style={{
+              paddingVertical: 15,
+              paddingHorizontal: 10,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.text}>Next</Text>
+            <MaterialIcons name="navigate-next" size={34} color="white" />
+          </View>
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity style={styles.btn} onPress={async() => {
-           await saveRegistration();
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={async () => {
+            await saveRegistration();
             next();
-        }}>
-          <Text style={styles.text}> Next </Text>
+          }}
+        >
+          <View
+            style={{
+              paddingVertical: 15,
+              paddingHorizontal: 10,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.text}>Next</Text>
+            <MaterialIcons name="navigate-next" size={34} color="white" />
+          </View>
         </TouchableOpacity>
       )}
     </View>
@@ -107,16 +137,16 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    padding: 15,
-    borderRadius: 18,
+    // padding: 5,
+    borderRadius: 20,
   },
   diableBtn: {
     backgroundColor: "#ad9d9d",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    padding: 15,
-    borderRadius: 18,
+    // padding:    15,
+    borderRadius: 20,
   },
   text: {
     color: "white",
