@@ -46,17 +46,18 @@ export default function RegistratonScreen({ navigation }) {
   const [profileData, setProfileData] = React.useState({});
 
   React.useEffect(() => {
+    
     sleep(3000).then(() => {
       AsyncStorage.getItem("profile").then((profile) => {
         setProfileData(JSON.parse(profile));
-        console.log(profileData);
+        // console.log(profileData);
       });
 	});
 	
 
     //   let { reg } = profileData;
     //   console.log(reg.password);
-  }, [profileData]);
+  }, []);
 
   React.useEffect(() => setvisibleToast(false), [visibleToast]);
 
@@ -67,6 +68,9 @@ export default function RegistratonScreen({ navigation }) {
   // 		true
   // 	}
   // }
+
+const {fullName, username, password} = profileData;
+console.log(fullName)
 
   const handleButtonPress = () => {
     setvisibleToast(true);
@@ -101,7 +105,7 @@ export default function RegistratonScreen({ navigation }) {
   emergency_contacts.push(con1, con2);
 
   return (
-    <ScrollView>
+  
       <View style={styles.container}>
         <Heading style={styles.title}> Emergency Section</Heading>
 
@@ -223,7 +227,7 @@ export default function RegistratonScreen({ navigation }) {
           message="Regisered Successfully"
         />
       </View>
-    </ScrollView>
+  
   );
 }
 

@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from "react-native";
 import Input from "../components/Input";
 
 export default function UpdatePassword() {
+
+    
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState(null);
   return (

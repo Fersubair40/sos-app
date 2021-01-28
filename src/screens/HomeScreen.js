@@ -30,7 +30,7 @@ const Toast = ({ visible, message }) => {
 
 export default function HomeScreen({ navigation }) {
   const { logout } = React.useContext(AuthContext);
-  //   const { sendLoc } = React.useContext(AuthContext);
+
   const user = React.useContext(UserContext);
 
   const token = user.token;
@@ -49,7 +49,7 @@ export default function HomeScreen({ navigation }) {
   const [longitude, setLongitude] = React.useState("");
   const [timestamp, setTime] = React.useState("");
 
-  const [dash, updateDash] = React.useState({});
+  // const [dash, updateDash] = React.useState({});
 
   React.useEffect(() => setvisibleToast(false), [visibleToast]);
 
@@ -63,6 +63,7 @@ export default function HomeScreen({ navigation }) {
         <HeaderIconButton
           name={"log-out"}
           onPress={() => {
+          
             logout();
           }}
         />
